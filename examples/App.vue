@@ -14,14 +14,13 @@
         >
         </echo-editor>
       </div>
-      {content &&
-      <div class="mt-6 rounded-lg border bg-muted p-4">
+      <div v-if="content" class="mt-6 rounded-lg border bg-muted p-4">
         <h3 class="mb-2 text-sm font-medium">HTML Output</h3>
         <div class="rounded bg-muted-foreground/5 max-h-[500px] overflow-auto">
           <span>{{ content }}</span>
         </div>
       </div>
-      }
+    </div>
     </div>
   </div>
 </template>
@@ -77,7 +76,7 @@ import { useColorMode } from './composables/useColorMode'
 import './style.css'
 import 'echo-editor/style.css'
 
-const content = ref(DEMO_CONTENT)
+const content = ref()
 const theme = ref<string | null>(null)
 const hideToolbar = ref<boolean>(false)
 const hideMenubar = ref<boolean>(false)
