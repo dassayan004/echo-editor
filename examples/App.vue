@@ -76,7 +76,7 @@ import { useColorMode } from './composables/useColorMode'
 import './style.css'
 import 'echo-editor/style.css'
 
-const content = ref()
+const content = ref(DEMO_CONTENT)
 const theme = ref<string | null>(null)
 const hideToolbar = ref<boolean>(false)
 const hideMenubar = ref<boolean>(false)
