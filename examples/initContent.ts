@@ -1,6 +1,6 @@
 export const DEMO_CONTENT = {
   type: 'doc',
-   content: [
+  content: [
     {
       type: 'heading',
       attrs: { textAlign: 'center', indent: 0, lineHeight: null, level: 1 },

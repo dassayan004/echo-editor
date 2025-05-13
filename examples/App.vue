@@ -1,27 +1,8 @@
 <template>
-  <div class="min-h-screen bg-background">
-    <div class="my-0 mx-auto max-w-[1024px] p-6">
-      <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
-        <echo-editor
-          v-model="content"
-          :extensions="extensions"
-          :hideToolbar="hideToolbar"
-          :hideMenubar="hideMenubar"
-          :disabled="disabled"
-          :maxHeight="512"
-          output="html"
-          :dark="theme === 'dark'"
-        >
-        </echo-editor>
-      </div>
-
-      <!-- <div v-if="content" class="mt-6 rounded-lg border bg-muted p-4">
-        <h3 class="mb-2 text-sm font-medium">HTML Output</h3>
-        <div class="rounded bg-muted-foreground/5 max-h-[500px] overflow-auto">
-          <span>{{ content }}</span>
-        </div>
-      </div> -->
-    </div>
+  <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+    <echo-editor v-model="content" :extensions="extensions" :hideToolbar="hideToolbar" :hideMenubar="hideMenubar"
+      :disabled="disabled" :maxHeight="512" output="html" :dark="false">
+    </echo-editor>
   </div>
 </template>
 <script setup lang="ts">
@@ -72,17 +53,20 @@ import {
 import { ExportWord } from './extensions/ExportWord'
 import OpenAI from 'openai'
 import { DEMO_CONTENT } from './initContent'
-import { useColorMode } from './composables/useColorMode'
+
 import './style.css'
 import 'echo-editor/style.css'
+import { useColorMode } from './composables/useColorMode'
 
 const content = ref('')
-const theme = ref<string | null>(null)
+const { theme } = useColorMode()
+console.log(theme)
+
 const hideToolbar = ref<boolean>(false)
 const hideMenubar = ref<boolean>(false)
 const disabled = ref<boolean>(false)
 const squidexField = ref<any>(null)
-const colorMode = useColorMode()
+
 onMounted(() => {
   if (typeof window === 'undefined' || !window.SquidexFormField) return
 

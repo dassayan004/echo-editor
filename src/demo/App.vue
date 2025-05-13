@@ -62,10 +62,8 @@ import {
 import { JSONContent } from '../index'
 import { DEMO_CONTENT } from './content'
 import OpenAI from 'openai'
-import { useColorMode } from './useColorMode'
 
 const content = ref<string | JSONContent>(DEMO_CONTENT)
-const colorMode = useColorMode()
 
 const extensions = [
   BaseKit.configure({
