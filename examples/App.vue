@@ -4,7 +4,7 @@
       <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
         <echo-editor
           v-model="content"
-          :extensions="extensions"          
+          :extensions="extensions"
           :hideToolbar="hideToolbar"
           :hideMenubar="hideMenubar"
           :disabled="disabled"
@@ -14,6 +14,7 @@
         >
         </echo-editor>
       </div>
+
       <!-- <div v-if="content" class="mt-6 rounded-lg border bg-muted p-4">
         <h3 class="mb-2 text-sm font-medium">HTML Output</h3>
         <div class="rounded bg-muted-foreground/5 max-h-[500px] overflow-auto">
@@ -24,7 +25,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import {
   Bold,
   BulletList,
@@ -75,14 +76,38 @@ import { useColorMode } from './composables/useColorMode'
 import './style.css'
 import 'echo-editor/style.css'
 
-const content = ref("")
+const content = ref('')
 const theme = ref<string | null>(null)
 const hideToolbar = ref<boolean>(false)
 const hideMenubar = ref<boolean>(false)
 const disabled = ref<boolean>(false)
-
+const squidexField = ref<any>(null)
 const colorMode = useColorMode()
+onMounted(() => {
+  if (typeof window === 'undefined' || !window.SquidexFormField) return
 
+  const field = new window.SquidexFormField()
+  squidexField.value = field
+
+  // Load content from Squidex
+  field.onValueChanged((value: string) => {
+    try {
+      content.value = value || ''
+    } catch (err) {
+      console.warn('Invalid JSON from Squidex:', value)
+    }
+  })
+
+  // Handle disable state
+  field.onDisabled((isDisabled: boolean) => {
+    disabled.value = isDisabled
+  })
+})
+watch(content, newContent => {
+  if (squidexField.value) {
+    squidexField.value.valueChanged(newContent)
+  }
+})
 const extensions = [
   BaseKit.configure({
     placeholder: {
